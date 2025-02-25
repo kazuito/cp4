@@ -1,44 +1,51 @@
 import { program } from "commander";
 import { cp } from "fs/promises";
-import { CopyOptions, watch, WatchOptions } from "fs";
+import { watch, CopyOptions, WatchOptions } from "fs";
 
-async function main() {
-  program
-    .option("-r, --recursive", "copy directories recursively")
-    .argument("<source>", "file/dir to copy")
-    .argument("<destination>", "destination");
+program
+  .option("-r, --recursive", "copy directories recursively")
+  .option("-f, --force", "overwrite existing files (default: true)", true)
+  .option("-n, --no-clobber", "do not overwrite existing files")
+  .option("-p, --preserve-timestamps", "preserve modification and access times")
+  .argument("<source>", "source file or directory")
+  .argument("<destination>", "destination file or directory")
+  .action(async (srcPath: string, destPath: string, options: any) => {
+    const copyOptions: CopyOptions = {
+      recursive: !!options.recursive,
+      force: options.noClobber ? false : options.force,
+      errorOnExist: !!options.noClobber,
+      preserveTimestamps: !!options.preserveTimestamps,
+    };
 
-  program.parse();
+    const watchOptions: WatchOptions = {
+      recursive: !!options.recursive,
+    };
 
-  const options = program.opts();
-  const [srcPath, destPath] = program.args;
+    async function performCopy() {
+      try {
+        await cp(srcPath, destPath, copyOptions);
+      } catch (err) {
+        console.error(`${err}`);
+      }
+    }
 
-  const copyOptions: CopyOptions = {
-    recursive: !!options.recursive,
-  };
-  const watchOptions: WatchOptions = {
-    recursive: !!options.recursive,
-  };
-
-  const copy = async () => {
-    await cp(srcPath, destPath, copyOptions);
-  };
-
-  // watch for changes
-  watch(srcPath, watchOptions, async (_, filename) => {
-    await copy();
+    // perform initial copy
+    await performCopy();
     console.log(
-      `[watch] copied "${srcPath}/${filename}" to "${destPath}/${filename}"`
+      `[watch] copied "${srcPath}" to "${destPath}", watching for changes...`
     );
+
+    // watch for changes
+    watch(srcPath, watchOptions, async (_, filename) => {
+      try {
+        await performCopy();
+        console.log(`[watch] copied "${srcPath}/${filename}" to "${destPath}"`);
+      } catch (err) {
+        console.error(`[watch] error during watching: ${err}`);
+      }
+    });
   });
 
-  // initial copy
-  await copy();
-  console.log(`[watch] copied "${srcPath}" to "${destPath}", watching for changes...`);
-}
-
-try {
-  main();
-} catch (error) {
-  console.error(error);
-}
+program.parseAsync().catch((err) => {
+  console.error(`${err}`);
+});
