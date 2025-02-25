@@ -3,22 +3,15 @@ import { cp } from "fs/promises";
 import { watch, CopyOptions, WatchOptions } from "fs";
 
 program
-  .option("-r, --recursive", "copy directories recursively")
-  .option("-f, --force", "overwrite existing files (default: true)", true)
-  .option("-n, --no-clobber", "do not overwrite existing files")
-  .option("-p, --preserve-timestamps", "preserve modification and access times")
   .argument("<source>", "source file or directory")
   .argument("<destination>", "destination file or directory")
   .action(async (srcPath: string, destPath: string, options: any) => {
     const copyOptions: CopyOptions = {
-      recursive: !!options.recursive,
-      force: options.noClobber ? false : options.force,
-      errorOnExist: !!options.noClobber,
-      preserveTimestamps: !!options.preserveTimestamps,
+      recursive: true
     };
 
     const watchOptions: WatchOptions = {
-      recursive: !!options.recursive,
+      recursive: true
     };
 
     async function performCopy() {

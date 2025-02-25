@@ -9,6 +9,6 @@ npm i cp4
 
 ## Usage
 ```
-cp4 [-r] <source> <target>
+cp4 <source> <target>
 ```
 
