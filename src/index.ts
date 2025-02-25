@@ -5,13 +5,13 @@ import { CopyOptions, watch, WatchOptions } from "fs";
 async function main() {
   program
     .option("-r, --recursive", "copy directories recursively")
-    .argument("<file>", "file/dir to copy")
-    .argument("<dest>", "destination");
+    .argument("<source>", "file/dir to copy")
+    .argument("<destination>", "destination");
 
   program.parse();
 
   const options = program.opts();
-  const [filePath, destPath] = program.args;
+  const [srcPath, destPath] = program.args;
 
   const copyOptions: CopyOptions = {
     recursive: !!options.recursive,
@@ -21,20 +21,20 @@ async function main() {
   };
 
   const copy = async () => {
-    await cp(filePath, destPath, copyOptions);
+    await cp(srcPath, destPath, copyOptions);
   };
 
   // watch for changes
-  watch(filePath, watchOptions, async (_, filename) => {
+  watch(srcPath, watchOptions, async (_, filename) => {
     await copy();
     console.log(
-      `[watch] copied "${filePath}/${filename}" to "${destPath}/${filename}"`
+      `[watch] copied "${srcPath}/${filename}" to "${destPath}/${filename}"`
     );
   });
 
   // initial copy
   await copy();
-  console.log(`[watch] copied "${filePath}" to "${destPath}", watching for changes...`);
+  console.log(`[watch] copied "${srcPath}" to "${destPath}", watching for changes...`);
 }
 
 try {
