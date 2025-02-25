@@ -1,7 +1,7 @@
 {
   "name": "cp4",
-  "version": "1.0.0",
-  "description": "watch to copy.",
+  "version": "1.0.1",
+  "description": "watch to copy files.",
   "license": "MIT",
   "main": "dist/index.js",
   "repository": {
