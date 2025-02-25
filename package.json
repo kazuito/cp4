@@ -1,16 +1,31 @@
 {
-  "name": "cp2",
+  "name": "cp4",
   "version": "1.0.0",
-  "description": "",
-  "bin": "dist/index.js",
-  "scripts": {
-    "dev": "esbuild src/index.ts --bundle --sourcemap --outdir=dist --watch"
+  "description": "watch to copy.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kazuito/cp4.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "bin": {
+    "cp4": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "esbuild src/index.ts --bundle --sourcemap --outdir=dist --watch",
+    "build": "esbuild src/index.ts --bundle --sourcemap --outdir=dist --minify"
+  },
   "devDependencies": {
     "esbuild": "^0.25.0",
     "typescript": "^5.7.3"
-  }
+  },
+  "keywords": [
+    "cp"
+  ]
 }
