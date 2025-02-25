@@ -2,6 +2,6 @@ node_modules
 dist
 out
 
-# for test
+# for debug
 from
 to

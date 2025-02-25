@@ -25,9 +25,11 @@ async function main() {
   };
 
   // watch for changes
-  watch(filePath, watchOptions, async (eventType, filename) => {
+  watch(filePath, watchOptions, async (_, filename) => {
     await copy();
-    console.log(`[watch] copied "${filePath}/${filename}" to "${destPath}/${filename}"`);
+    console.log(
+      `[watch] copied "${filePath}/${filename}" to "${destPath}/${filename}"`
+    );
   });
 
   // initial copy
