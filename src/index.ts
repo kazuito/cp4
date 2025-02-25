@@ -34,7 +34,7 @@ async function main() {
 
   // initial copy
   await copy();
-  console.log(`[watch] copied "${filePath}" to "${destPath}"`);
+  console.log(`[watch] copied "${filePath}" to "${destPath}", watching for changes...`);
 }
 
 try {
