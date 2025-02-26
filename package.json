@@ -1,6 +1,6 @@
 {
   "name": "cp4",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "watch to copy files.",
   "license": "MIT",
   "main": "dist/index.js",
@@ -19,7 +19,7 @@
   },
   "scripts": {
     "dev": "esbuild src/index.ts --bundle --sourcemap --outdir=dist --watch --platform=node",
-    "build": "esbuild src/index.ts --bundle --sourcemap --outdir=dist --minify --platform=node"
+    "build": "rm -rf dist && esbuild src/index.ts --bundle --outdir=dist --minify --platform=node"
   },
   "devDependencies": {
     "esbuild": "^0.25.0",
