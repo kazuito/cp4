@@ -1,6 +1,6 @@
 {
   "name": "cp4",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "watch to copy files.",
   "license": "MIT",
   "main": "dist/index.js",
